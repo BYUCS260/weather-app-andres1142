@@ -1,14 +1,27 @@
-document.getElementById('weatherSubmit').addEventListener('click', async function (event) {
-        event.preventDefault();
-        const value = document.getElementById('weatherInput').value;
-        const url = "http://api.openweathermap.org/data/2.5/weather?q=" + value + ",US&units=imperial" + "&APPID=55734c8cfa3cc8323f8edf524f8730cf";
-        fetch(url)
+document.getElementById('today-option').addEventListener('click', function (event) {
+    event.preventDefault();
+    getData(1)
+})
+document.getElementById('5-day-option').addEventListener('click', function (event) {
+    event.preventDefault();
+    getData(5)
+})
+
+async function getData(days) {
+    const value = document.getElementById('weatherInput').value
+    const todayWeather = "http://api.openweathermap.org/data/2.5/weather?q=" + value + ",US&units=imperial" + "&APPID=55734c8cfa3cc8323f8edf524f8730cf"
+    const weekWeather = "http://api.openweathermap.org/data/2.5/forecast?q=" + value + ", US&units=imperial" + "&APPID=55734c8cfa3cc8323f8edf524f8730cf"
+
+    document.getElementById('weatherResults').textContent = ''
+    document.getElementById('forecastResults').textContent = ''
+
+    if (days === 1) {
+        fetch(todayWeather)
             .then(function (response) {
                 return response.json();
             }).then(function (json) {
-
             let results = "";
-            results += '<h2>Weather in ' + json.name + "</h2>";
+            results += '<h2 = class="city-name">Weather in ' + json.name + "</h2>";
             for (let i = 0; i < json.weather.length; i++) {
                 results += '<img src="http://openweathermap.org/img/w/' + json.weather[i].icon + '.png"/>';
             }
@@ -21,10 +34,10 @@ document.getElementById('weatherSubmit').addEventListener('click', async functio
             }
             results += "</p>";
             document.getElementById("weatherResults").innerHTML = results;
-        });
 
-        const url2 = "http://api.openweathermap.org/data/2.5/forecast?q=" + value + ", US&units=imperial" + "&APPID=55734c8cfa3cc8323f8edf524f8730cf";
-        fetch(url2)
+        });
+    } else {
+        fetch(weekWeather)
             .then(function (response) {
                 return response.json();
             }).then(function (json) {
@@ -37,4 +50,4 @@ document.getElementById('weatherSubmit').addEventListener('click', async functio
             document.getElementById("forecastResults").innerHTML = forecast;
         });
     }
-)
+}
