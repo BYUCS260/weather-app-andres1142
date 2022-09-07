@@ -16,25 +16,46 @@ async function getData(days) {
     document.getElementById('forecastResults').textContent = ''
 
     if (days === 1) {
+        const div = document.getElementById('weatherResults')
         fetch(todayWeather)
             .then(function (response) {
                 return response.json();
             }).then(function (json) {
-            let results = "";
-            results += '<h2 = class="city-name">Weather in ' + json.name + "</h2>";
+            //html tags
+            const h2 = document.createElement('h2')
+            const h3 = document.createElement('h3')
+            const img = document.createElement('img')
+            const p = document.createElement('p')
+
+            //City name
+            h2.classList.add('city_name')
+            h2.textContent = 'Weather in ' + json.name
+            //Img
+            const imgDiv = document.createElement('div')
             for (let i = 0; i < json.weather.length; i++) {
-                results += '<img src="http://openweathermap.org/img/w/' + json.weather[i].icon + '.png"/>';
+                img.src = 'http://openweathermap.org/img/w/' + json.weather[i].icon + '.png'
             }
-            results += '<h2>' + json.main.temp + " &deg;F</h2>"
-            results += "<p>"
+            img.classList.add('weather-img')
+            imgDiv.append(img)
+            imgDiv.classList.add('img_container')
+
+            //Temperature
+            h3.textContent = json.main.temp
+
+            //Description
+            let results = '';
             for (let i = 0; i < json.weather.length; i++) {
                 results += json.weather[i].description
                 if (i !== json.weather.length - 1)
                     results += ", "
             }
-            results += "</p>";
-            document.getElementById("weatherResults").innerHTML = results;
+            p.innerText = results
+            p.classList.add('description')
 
+            div.append(h2)
+            div.append(imgDiv)
+            div.append(h3)
+            div.append(p)
         });
     } else {
         fetch(weekWeather)

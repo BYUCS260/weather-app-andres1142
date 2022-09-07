@@ -1,12 +1,36 @@
 body {
     background-color: antiquewhite;
 }
+#timeOptions{
+    display: none;
+}
+form {
+    padding-top: 25px;
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    justify-content: center;
+}
+.form_buttons, .form_text{
+    display: flex;
+    justify-content: space-evenly;
+}
+.form_buttons{
+    padding: 15px 0 15px 0;
+}
+.form_text > label{
+    padding-right: 5px
+}
 #weatherResults {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+}
+#weatherResults > h2, h3, p {
     display: flex;
     justify-content: center;
 }
-#timeOptions{
-    display: none;
+.img_container {
+    display: flex;
+    justify-content: center;
 }
 
 /* Mobile Styles */
