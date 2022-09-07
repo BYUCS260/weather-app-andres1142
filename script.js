@@ -10,7 +10,7 @@ document.getElementById('5-day-option').addEventListener('click', function (even
 async function getData(days) {
     const value = document.getElementById('weatherInput').value
     const todayWeather = "http://api.openweathermap.org/data/2.5/weather?q=" + value + ",US&units=imperial" + "&APPID=55734c8cfa3cc8323f8edf524f8730cf"
-    const weekWeather = "http://api.openweathermap.org/data/2.5/forecast?q=" + value + ", US&units=imperial" + "&APPID=55734c8cfa3cc8323f8edf524f8730cf"
+    const weekWeather = "http://api.openweathermap.org/data/2.5/forecast?q=" + value + ",US&units=imperial" + "&APPID=55734c8cfa3cc8323f8edf524f8730cf"
 
     document.getElementById('weatherResults').textContent = ''
     document.getElementById('forecastResults').textContent = ''
@@ -46,8 +46,7 @@ async function getData(days) {
             let results = '';
             for (let i = 0; i < json.weather.length; i++) {
                 results += json.weather[i].description
-                if (i !== json.weather.length - 1)
-                    results += ", "
+                if (i !== json.weather.length - 1) results += ", "
             }
             p.innerText = results
             p.classList.add('description')
@@ -62,13 +61,37 @@ async function getData(days) {
             .then(function (response) {
                 return response.json();
             }).then(function (json) {
-            let forecast = "";
+            const forecastGrid = document.getElementById('forecastResults')
+            let curData = '';
             for (let i = 0; i < json.list.length; i++) {
-                forecast += "<h2>" + moment(json.list[i].dt_txt).format('MMMM Do YYYY, h:mm:ss a') + "</h2>";
-                forecast += "<p>Temperature: " + json.list[i].main.temp + "</p>";
-                forecast += '<img src="http://openweathermap.org/img/w/' + json.list[i].weather[0].icon + '.png"/>'
+                const divImg = document.createElement('div')
+                const img = document.createElement('img')
+                img.src = 'http://openweathermap.org/img/w/' + json.list[i].weather[0].icon + '.png'
+                divImg.classList.add('img_container_grid')
+                divImg.append(img)
+                const dataContainer = document.createElement('div')
+                dataContainer.classList.add('data_container')
+
+                //Checks days
+                if (curData.length === 0 || curData !== moment(json.list[i].dt_txt).format('MMMM Do')) {
+                    const span = document.createElement('span')
+                    curData = moment(json.list[i].dt_txt).format('MMMM Do')
+                    //Appends the date to the container
+                    span.classList.add('day_week')
+                    span.textContent = curData
+                    forecastGrid.append(span)
+                }
+
+                dataContainer.append(divImg)
+                const divDate = document.createElement('div')
+                divDate.append(moment(json.list[i].dt_txt).format('h:mm A'))
+                dataContainer.append(divDate)
+                const divTemp = document.createElement('div')
+                divTemp.append(json.list[i].main.temp + ' F°')
+                dataContainer.append(divTemp)
+
+                forecastGrid.append(dataContainer)
             }
-            document.getElementById("forecastResults").innerHTML = forecast;
         });
     }
 }

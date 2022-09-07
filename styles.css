@@ -32,6 +32,24 @@ form {
     display: flex;
     justify-content: center;
 }
+#forecastResults {
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+}
+.day_week{
+    grid-column: span 4;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0 10px 0;
+}
+.data_container{
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    border: white solid 2px;
+}
+.data_container > div {
+    text-align: center;
+}
 
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
