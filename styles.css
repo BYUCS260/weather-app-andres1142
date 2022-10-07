@@ -51,6 +51,15 @@ form {
     text-align: center;
 }
 
+.footer{
+    height: 100px;
+    background: white;
+    display: flex;
+    justify-content: center;
+
+}
+
+
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
 
